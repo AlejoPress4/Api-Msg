@@ -38,37 +38,34 @@ def payment_notification():
     try:
         info_request = request.get_json()
         
-        # Validar campos requeridos
-        required_fields = ['recipient', 'message', 'subject']
+        # Validar campos requeridos (solo recipient y message como los otros endpoints)
+        required_fields = ['recipient', 'message']
         if not all(field in info_request for field in required_fields):
             return jsonify({
-                "status": "error",
-                "message": "Missing required fields",
-                "required": required_fields
+                "mensaje": "the message could not be sent",
+                "details": f"Missing required fields: {required_fields}"
             }), 400
 
-        # Enviar el correo usando la clase Send_email
+        # Enviar el correo usando la clase Send_email (mismo formato que send_mail)
         email_sender = Send_email(
             message=info_request['message'],
-            recipient=info_request['recipient'],
-            subject_line=info_request['subject']
+            recipient=info_request['recipient']
         )
 
         if email_sender.send_the_payment_info():
             return jsonify({
-                "status": "success",
-                "message": "Payment notification sent successfully"
+                "mensaje": "the message has been sent"
             }), 200
         else:
             return jsonify({
-                "status": "error",
-                "message": "Failed to send payment notification"
+                "mensaje": "the message could not be sent"
             }), 500
 
     except Exception as e:
+        print(f"Error en payment_notification: {str(e)}")
         return jsonify({
-            "status": "error",
-            "message": str(e)
+            "mensaje": "the message could not be sent",
+            "error": str(e)
         }), 500
 
 # @app.route('/shares/<share_id>', methods=['GET'])

@@ -4,7 +4,7 @@ import os
 
 #Utilizando la misma logica de azure communication
 class Send_email:
-    def __init__(self, message, recipient, subject_line = "2FA Code"):
+    def __init__(self, message, recipient, subject_line = "Gestion de Servicios de Transporte"):
         self.message = message
         self.recipient = recipient
         self.subject_line = subject_line
